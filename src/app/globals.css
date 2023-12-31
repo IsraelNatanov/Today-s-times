@@ -3,25 +3,71 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --yellow: #f9b630c5;
+
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+.input-time {
+  @apply w-32 rounded  border border-gray-200 py-2 px-6 bg-zinc-100/40 focus:border-[var(--yellow)] focus:ring-[var(--yellow)] focus:outline-none focus:ring-1;
+}
+
+input[type="text"]:focus ~ .input-text,
+input[type="text"]:not(:placeholder-shown) ~ .input-text{
+  @apply text-black transform -translate-y-6 -translate-x-0 scale-75;
+}
+.name-input {
+  @apply block text-sm font-medium leading-6 text-gray-900 text-center
+}
+
+@layer components {
+  .border-bg-slate-200 {
+    /* Define the styles for border-bg-slate-200 here */
+    /* For example: */
+    border-color: #e5e7eb;
+    /* other properties */
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.box {
+  @apply border-solid border-2 border-bg-slate-200 rounded-lg mt-4 py-4 px-3;
+}
+.row-box{
+  @apply flex flex-row justify-center items-center  mt-5 relative
+}
+
+.button-add{
+  @apply w-20 h-[80px] min-w-max rounded-md bg-[#F9B530] px-3.5  text-sm font-semibold flex flex-col justify-center items-center
+                             text-white shadow-sm hover:bg-[#f9b630c5]
+}
+.row-input{
+  @apply flex flex-row flex-nowrap gap-4 justify-items-center items-center  bg-scroll max-w-[470px] overflow-x-auto m-center p-2
+}
+
+::-webkit-scrollbar {
+  height: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.tooltip {
+  @apply invisible absolute;
+}
+
+.has-tooltip:hover .tooltip {
+  @apply visible z-[50];
 }
