@@ -29,14 +29,14 @@ input[type="text"]:not(:placeholder-shown) ~ .input-text{
 }
 
 .box {
-  @apply border-solid border-2 border-bg-slate-200 rounded-lg mt-4 py-4 px-3;
+  @apply border-solid border-2 border-bg-slate-200 rounded-lg mt-4 py-2 px-3;
 }
 .row-box{
   @apply flex flex-row justify-center items-center  mt-5 relative
 }
 
 .button-add{
-  @apply w-20 h-[80px] min-w-max rounded-md bg-[#F9B530] px-3.5  text-sm font-semibold flex flex-col justify-center items-center
+  @apply  py-4 min-w-max rounded-md bg-[#F9B530] px-3.5  text-sm font-semibold flex flex-col justify-center items-center
                              text-white shadow-sm hover:bg-[#f9b630c5]
 }
 .row-input{

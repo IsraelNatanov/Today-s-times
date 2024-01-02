@@ -9,6 +9,7 @@ import { RootState } from '@/redux/store';
 import { addToListShabbatNight, addToListSaturday, addToListClasses, addToListActivityChildren, deleteItemFromShabbatNight, deleteItemFromListSaturday, deleteItemFromListClasses, deleteItemFromActivityChildren } from '@/redux/features/listDataInputsSlice'
 import { TrashIcon } from '@/images/trashIcon';
 import InputTime from './inputTime';
+import ButtonTextIcon from './buttonTextIcon';
 
 
 
@@ -83,14 +84,30 @@ export default function BoxInputs({ textSubject, jsonInputs,
   const closeDialog = () => {
     setIsDialogOpen(false);
   };
+
+  const handleDrag = (boxId: number, e: any, ui: any) => {
+    const newBoxes = [...jsonInputs!];
+    
+    const draggedBox = newBoxes[boxId];
+    const { x } = ui;
+
+    const change = draggedBox.right - x;
+
+    if (boxId > 0 && boxId < newBoxes.length - 1) {
+      newBoxes[boxId - 1].right -= change;
+      newBoxes[boxId + 1].right += change;
+    }
+
+    draggedBox.right = x;
+
+    // setBoxes(newBoxes);
+  };
   return (
     <div className='box'>
       <p className="normal-case text-center"> {textSubject} </p>
       <div className='row-box'>
-        <button className="button-add" onClick={openDialog}>
-          <span className="font-bold mr-1">הוסף {textButton}</span>
-          <MyIcon color="rgb(255 255 255)" />
-        </button>
+        <ButtonTextIcon action={openDialog} textButton={ textButton}  > <MyIcon color="rgb(255 255 255)" /></ButtonTextIcon>
+   
         <Dialog isOpen={isDialogOpen} onClose={closeDialog} subject={textButton} isLesson={isLesson} action={handleAddToList} />
         <div className='row-input' >
 
@@ -100,19 +117,10 @@ export default function BoxInputs({ textSubject, jsonInputs,
             handleDeleteToList={handleDeleteToList}
             handleAddToList={handleAddToList}
             nameInput={item.name}
+            handleDrag={handleDrag}
             time={item.time}/>
 
-            // <div className='flex flex-col items-center justify-center  bg-slate-100 min-w-[140px] h-[85px] rounded-lg drop-shadow-md' key={index}>
-            //   {/* <div className='absolute top-1 left-0' ><TrashIcon color='#f9b630c5' /></div> */}
-            //   <div className='has-tooltip'>
-            //     <span className='tooltip rounded shadow-lg p-1 text-xs bg-gray-100 top-[-10px] right-24' onClick={()=>handleDeleteToList(index)}>מחק</span>
-            //    <div className='absolute top-1 left-0 'onClick={()=>handleDeleteToList(index)} ><TrashIcon color='#f9b630c5' /></div>
-            //   </div>
-
-            //   <label className="name-input"> {item.name} </label>
-            //   <input className='input-time' type="time"  defaultValue={item.time}  onChange={(e) => handleAddToList({ name: item.name, time: e.target.value })} />
-            // </div>
-
+       
 
           ))}
 
