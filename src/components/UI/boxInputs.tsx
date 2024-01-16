@@ -6,7 +6,7 @@ import Dialog from '../UI/dialog';
 import { DataInput } from '../type/dateInput';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { addToListShabbatNight, addToListSaturday, addToListClasses, addToListActivityChildren, deleteItemFromShabbatNight, deleteItemFromListSaturday, deleteItemFromListClasses, deleteItemFromActivityChildren } from '@/redux/features/listDataInputsSlice'
+import { addToListShabbatNight, addToListSaturday, addToListClasses, addToListActivityChildren, deleteItemFromShabbatNight, deleteItemFromListSaturday, deleteItemFromListClasses, deleteItemFromActivityChildren, updateListShabbatNight, updateListSaturday, updateListClasses, updateListActivityChildren } from '@/redux/features/listDataInputsSlice'
 import { TrashIcon } from '@/images/trashIcon';
 import InputTime from './inputTime';
 import ButtonTextIcon from './buttonTextIcon';
@@ -50,6 +50,25 @@ export default function BoxInputs({ textSubject, jsonInputs,
 
     }
     setIsDialogOpen(false);
+  }
+
+  const handleUpdateToList = (list: DataInput[], nameList = textSubject) => {
+    switch (nameList) {
+      case 'תפילות ליל שבת':
+        dispatch(updateListShabbatNight(list));
+        break;
+      case 'תפילות יום שבת':
+        dispatch(updateListSaturday(list));
+        break;
+      case 'שיעורים':
+        dispatch(updateListClasses(list));
+        break;
+      case 'פעילות לילדים':
+        dispatch(updateListActivityChildren(list));
+        break;
+
+    }
+    
   }
 
   const handleDeleteToList = (id: number, nameList = textSubject) => {
@@ -97,10 +116,11 @@ export default function BoxInputs({ textSubject, jsonInputs,
       newBoxes[boxId - 1].right -= change;
       newBoxes[boxId + 1].right += change;
     }
+    const s =  draggedBox.right
 
     draggedBox.right = x;
 
-    // setBoxes(newBoxes);
+    handleUpdateToList(newBoxes)
   };
   return (
     <div className='box'>
