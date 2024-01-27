@@ -6,9 +6,15 @@ import Dialog from '../UI/dialog';
 import { DataInput } from '../type/dateInput';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { addToListShabbatNight, addToListSaturday, addToListClasses, addToListActivityChildren, deleteItemFromShabbatNight, deleteItemFromListSaturday, deleteItemFromListClasses, deleteItemFromActivityChildren } from '@/redux/features/listDataInputsSlice'
+import { addToListShabbatNight, addToListSaturday, addToListClasses, addToListActivityChildren,updateListSaturday, deleteItemFromShabbatNight, deleteItemFromListSaturday, deleteItemFromListClasses, deleteItemFromActivityChildren } from '@/redux/features/listDataInputsSlice'
 import { TrashIcon } from '@/images/trashIcon';
 import InputTime from './inputTime';
+import {
+  GridContextProvider,
+  GridDropZone,
+  GridItem,
+  swap,
+} from "react-grid-dnd";
 
 
 
@@ -26,12 +32,18 @@ export default function BoxInputs({ textSubject, jsonInputs,
   action, idSubject }: IProps) {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isLesson, setIsLesson] = useState<boolean>(false)
+  const [isLength, setIsLength] = useState<boolean>(false)
   const dispatch = useDispatch();
   const listShabbatNight = useSelector((state: RootState) => state.listDataInput.listShabbatNight);
   const listSaturday = useSelector((state: RootState) => state.listDataInput.listSaturday);
   const listClasses = useSelector((state: RootState) => state.listDataInput.listClasses);
   const listActivityChildren = useSelector((state: RootState) => state.listDataInput.listActivityChildren);
 
+  useEffect(()=>{
+if(jsonInputs!.length > 0){
+  setIsLength(true)
+}
+  },[])
   const handleAddToList = (data: DataInput, nameList = textSubject) => {
     switch (nameList) {
       case 'תפילות ליל שבת':
@@ -83,6 +95,11 @@ export default function BoxInputs({ textSubject, jsonInputs,
   const closeDialog = () => {
     setIsDialogOpen(false);
   };
+
+  function onChange(sourceId: any, sourceIndex: any, targetIndex: any, targetId: any) {
+    const nextState = swap(jsonInputs!, sourceIndex, targetIndex);
+    dispatch(updateListSaturday(nextState));
+  }
   return (
     <div className='box'>
       <p className="normal-case text-center"> {textSubject} </p>
@@ -92,9 +109,17 @@ export default function BoxInputs({ textSubject, jsonInputs,
           <MyIcon color="rgb(255 255 255)" />
         </button>
         <Dialog isOpen={isDialogOpen} onClose={closeDialog} subject={textButton} isLesson={isLesson} action={handleAddToList} />
+   
         <div className='row-input' >
-
-          {jsonInputs && jsonInputs.map((item, index) => (
+        <GridContextProvider onChange={onChange} >
+        <GridDropZone
+          id="items"
+          boxesPerRow={4}
+          rowHeight={50}
+          style={{ height: "50px" }}
+        >
+          { jsonInputs!.map((item, index) => (
+            //  <GridItem key={index}>
            <InputTime  key={index}
             index={index}
             handleDeleteToList={handleDeleteToList}
@@ -102,25 +127,17 @@ export default function BoxInputs({ textSubject, jsonInputs,
             nameInput={item.name}
             time={item.time}/>
 
-            // <div className='flex flex-col items-center justify-center  bg-slate-100 min-w-[140px] h-[85px] rounded-lg drop-shadow-md' key={index}>
-            //   {/* <div className='absolute top-1 left-0' ><TrashIcon color='#f9b630c5' /></div> */}
-            //   <div className='has-tooltip'>
-            //     <span className='tooltip rounded shadow-lg p-1 text-xs bg-gray-100 top-[-10px] right-24' onClick={()=>handleDeleteToList(index)}>מחק</span>
-            //    <div className='absolute top-1 left-0 'onClick={()=>handleDeleteToList(index)} ><TrashIcon color='#f9b630c5' /></div>
-            //   </div>
-
-            //   <label className="name-input"> {item.name} </label>
-            //   <input className='input-time' type="time"  defaultValue={item.time}  onChange={(e) => handleAddToList({ name: item.name, time: e.target.value })} />
-            // </div>
-
+        
 
           ))}
 
-
-
+</GridDropZone>
+      </GridContextProvider>
+  
 
         </div>
-
+  
+          
       </div>
 
     </div>

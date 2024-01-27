@@ -47,6 +47,18 @@ export const ListDataInputsSlice = createSlice({
       const list = updateList(state.listActivityChildren, dataOf.name, dataOf.time)
       state.listActivityChildren = list
     },
+    updateListShabbatNight(state, action: PayloadAction<DataInput[]>) {
+      state.listShabbatNight = action.payload
+    },
+    updateListSaturday(state, action: PayloadAction<DataInput[]>) {
+      state.listSaturday = action.payload
+    },
+    updateListClasses(state, action: PayloadAction<DataInput[]>) {
+      state.listClasses = action.payload
+    },
+    updateListActivityChildren(state, action: PayloadAction<DataInput[]>) {
+      state.listActivityChildren = action.payload
+    },
     deleteItemFromShabbatNight(state, action: PayloadAction<number>){
       const id: number = action.payload
       const list = deleteOneInpute(state.listShabbatNight, id)
@@ -88,6 +100,6 @@ const deleteOneInpute =(arr: DataInput[],id:number)=>{
   
 }
 
-export const { addToListShabbatNight, addToListSaturday, addToListClasses, addToListActivityChildren, deleteItemFromShabbatNight, deleteItemFromListSaturday, deleteItemFromListClasses, deleteItemFromActivityChildren} = ListDataInputsSlice.actions;
+export const { addToListShabbatNight, addToListSaturday, addToListClasses, addToListActivityChildren, updateListShabbatNight, updateListSaturday, updateListClasses, updateListActivityChildren, deleteItemFromShabbatNight, deleteItemFromListSaturday, deleteItemFromListClasses, deleteItemFromActivityChildren} = ListDataInputsSlice.actions;
 
 export default ListDataInputsSlice.reducer;
