@@ -24,7 +24,7 @@ import { CSS } from "@dnd-kit/utilities";
 
 interface IProps {
   textSubject: string;
-  jsonInputs: DataInput[] | null;
+  jsonInputs: DataInput[];
   textButton: string;
   action: (payload: DataInput) => void;
   idSubject: number;
@@ -103,7 +103,7 @@ export default function BoxInputs({
 
   const { setNodeRef, attributes, listeners, transform, transition } =
     useSortable({
-      id: jsonInputs!.id,
+      id: 0,
       data: {
         type: "DataInput",
         jsonInputs,
@@ -131,7 +131,7 @@ export default function BoxInputs({
         />
         <DndContext>
           <div className="row-input" >
-            <SortableContext items={jsonInputs}>
+            <SortableContext  items={[]}>
               {jsonInputs?.map((item, index) => (
                 <InputTime
                   key={index}
