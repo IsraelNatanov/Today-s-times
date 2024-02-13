@@ -19,12 +19,14 @@ const Dialog: React.FC<DialogProps> = ({ isOpen, onClose, subject, isLesson, act
   let initialDataInput: DataInput;
   if (subject === 'פעילות') {
     initialDataInput = {
+  
       name: '',
       time: '',
       nameLecture: ''
     };
   } else {
     initialDataInput = {
+    
       name: '',
       time: '',
 
