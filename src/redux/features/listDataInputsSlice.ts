@@ -15,9 +15,9 @@ export interface ListDataInput {
 
 
 export const initialState: ListDataInput = {
-  listShabbatNight: [{ name: "מנחה", time: "" }, { name: "קבלת שבת", time: "" }],
-  listSaturday: [{ name: "שחרית", time: "" }, { name: "מנחה", time: "" }, { name: "ערבית", time: "" }],
-  listClasses: [{ name: "שיחה חסידית", time: "", nameLecture: "" }, { name: "חסידות בוקר", time: "", nameLecture: "" }, { name: "שיעור בהלכה", time: "", nameLecture: "" }],
+  listShabbatNight: [{id:1, name: "מנחה", time: "" }, { id:2, name: "קבלת שבת", time: "" }],
+  listSaturday: [{id:1, name: "שחרית", time: "" }, {id:2, name: "מנחה", time: "" }, {id:3, name: "ערבית", time: "" }],
+  listClasses: [{id:1, name: "שיחה חסידית", time: "", nameLecture: "" }, { id:2, name: "חסידות בוקר", time: "", nameLecture: "" }, {id:3, name: "שיעור בהלכה", time: "", nameLecture: "" }],
   listActivityChildren: []
 
 };

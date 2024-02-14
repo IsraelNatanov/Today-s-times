@@ -1,6 +1,14 @@
 import React from 'react';
 import { DataInput } from '../type/dateInput';
-import { TrashIcon } from '@/images/trashIcon';
+import { TrashIcon } from '@/images/trashIcon';import { closestCenter, DndContext } from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+
 
 interface IProps {
 
@@ -13,6 +21,12 @@ interface IProps {
   };
 
 const InputTime = ({  index, handleDeleteToList, handleAddToList, nameInput, time }:IProps) => {
+
+
+
+ 
+
+  
   return (
     <div className='flex flex-col items-center justify-center bg-slate-100 min-w-[140px] h-[85px] rounded-lg drop-shadow-md' key={index}>
       <div className='has-tooltip'>

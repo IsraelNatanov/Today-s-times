@@ -6,6 +6,7 @@ import Dialog from "../UI/dialog";
 import { DataInput } from "../type/dateInput";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
+import { closestCenter, DndContext } from "@dnd-kit/core";
 import {
   addToListShabbatNight,
   addToListSaturday,
@@ -18,8 +19,12 @@ import {
 } from "@/redux/features/listDataInputsSlice";
 import { TrashIcon } from "@/images/trashIcon";
 import InputTime from "./inputTime";
-import { DndContext } from "@dnd-kit/core";
-import { SortableContext, useSortable } from "@dnd-kit/sortable";
+import {
+  arrayMove,
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 interface IProps {
@@ -39,6 +44,7 @@ export default function BoxInputs({
 }: IProps) {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isLesson, setIsLesson] = useState<boolean>(false);
+  const [data, setData] = useState<any>(jsonInputs)
   const dispatch = useDispatch();
   const listShabbatNight = useSelector(
     (state: RootState) => state.listDataInput.listShabbatNight
@@ -101,19 +107,35 @@ export default function BoxInputs({
     setIsDialogOpen(false);
   };
 
-  const { setNodeRef, attributes, listeners, transform, transition } =
-    useSortable({
-      id: 0,
-      data: {
-        type: "DataInput",
-        jsonInputs,
-      },
-    });
+ 
 
-    const style ={
+    const {
+      attributes,
+      listeners,
+      setNodeRef,
+      transform,
       transition,
-      transform: CSS.Transform.toString(transform)
-    }
+    } = useSortable({ id: data.id });
+    const style = {
+      transition,
+      transform: CSS.Transform.toString(transform),
+    };
+  
+
+  
+   
+
+    const onDragEnd = (event:any) => {
+      const { active, over } = event;
+      if (active.id === over.id) {
+        return;
+      }
+      setData((users:any) => {
+        const oldIndex = users.findIndex((user:any) => user.id === active.id);
+        const newIndex = users.findIndex((user:any) => user.id === over.id);
+        return arrayMove(users, oldIndex, newIndex);
+      });
+    };
   return (
     <div className="box" ref={setNodeRef} style={style}>
       <p className="normal-case text-center"> {textSubject} </p>
@@ -129,9 +151,10 @@ export default function BoxInputs({
           isLesson={isLesson}
           action={handleAddToList}
         />
-        <DndContext>
+
           <div className="row-input" >
-            <SortableContext  items={[]}>
+          <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+          <SortableContext items={data} strategy={verticalListSortingStrategy}>
               {jsonInputs?.map((item, index) => (
                 <InputTime
                   key={index}
@@ -142,6 +165,15 @@ export default function BoxInputs({
                   time={item.time}
                 />
 
+              //   <div
+              //   ref={setNodeRef}
+              //   style={style}
+              //   {...attributes}
+              //   {...listeners}
+              //   className="user"
+              // >
+              //   {user.name}
+              // </div>
                 // <div className='flex flex-col items-center justify-center  bg-slate-100 min-w-[140px] h-[85px] rounded-lg drop-shadow-md' key={index}>
                 //   {/* <div className='absolute top-1 left-0' ><TrashIcon color='#f9b630c5' /></div> */}
                 //   <div className='has-tooltip'>
@@ -153,9 +185,10 @@ export default function BoxInputs({
                 //   <input className='input-time' type="time"  defaultValue={item.time}  onChange={(e) => handleAddToList({ name: item.name, time: e.target.value })} />
                 // </div>
               ))}
-            </SortableContext>
-          </div>
+                </SortableContext>
         </DndContext>
+          </div>
+
       </div>
     </div>
   );
