@@ -20,11 +20,10 @@ const InputTime = ({
   const dragItem = useRef<number>(0);
   const draggedOverItem = useRef<number>(0);
   const [data, setData] = useState(jsonInputs);
+  
   function handleSort() {
-    console.log(draggedOverItem.current);
-    
+
     const idOver = draggedOverItem.current+1;
-    
     let itemeClone = jsonInputs.map(obj => ({ ...obj })); 
     
     itemeClone = itemeClone.map(obj => {
@@ -34,12 +33,8 @@ const InputTime = ({
         return { ...obj, id: obj.id - 1 }; 
       }
     });
-    
- 
     itemeClone[dragItem.current].id = idOver;
-
     itemeClone.sort((a, b) => a.id - b.id);
-
     handleUpdateToList(itemeClone);
   }
   
