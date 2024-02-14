@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { DataInput } from "../type/dateInput";
 import { TrashIcon } from "@/images/trashIcon";
 
@@ -19,14 +19,30 @@ const InputTime = ({
 
   const dragItem = useRef<number>(0);
   const draggedOverItem = useRef<number>(0);
-
+  const [data, setData] = useState(jsonInputs);
   function handleSort() {
-    const itemeClone = [...jsonInputs];
-    const temp = itemeClone[dragItem.current];
-    itemeClone[dragItem.current] = itemeClone[draggedOverItem.current];
-    itemeClone[draggedOverItem.current] = temp;
+    console.log(draggedOverItem.current);
+    
+    const idOver = draggedOverItem.current+1;
+    
+    let itemeClone = jsonInputs.map(obj => ({ ...obj })); 
+    
+    itemeClone = itemeClone.map(obj => {
+      if (obj.id > (draggedOverItem.current + 1) && obj.id+1 <= dragItem.current) {
+        return obj; 
+      } else {
+        return { ...obj, id: obj.id - 1 }; 
+      }
+    });
+    
+ 
+    itemeClone[dragItem.current].id = idOver;
+
+    itemeClone.sort((a, b) => a.id - b.id);
+
     handleUpdateToList(itemeClone);
   }
+  
   return (
     <div className="row-input">
       {jsonInputs.map((item, index) => (
