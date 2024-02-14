@@ -32,7 +32,10 @@ export default function FormAdmin() {
         dispatch(addToListActivityChildren(data));
       };
 
-    
+  useEffect(()=>{
+console.log(listClasses);
+
+  },[])  
 
 
 const handleSubmit = (e: { preventDefault: () => void; }) => {
