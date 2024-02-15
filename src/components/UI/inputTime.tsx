@@ -50,20 +50,12 @@ const InputTime = ({
           onDragOver={(e) => e.preventDefault()}
           key={index}
         >
-          <div className="has-tooltip">
-            <span
-              className="tooltip rounded shadow-lg p-1 text-xs bg-gray-100 top-[-10px] right-24"
-              onClick={() => handleDeleteToList(index)}
-            >
-              מחק
-            </span>
-            <div
-              className="absolute top-1 left-0"
-              onClick={() => handleDeleteToList(index)}
-            >
-              <TrashIcon color="#f9b630c5" />
-            </div>
-          </div>
+           <div className='has-tooltip'>
+        <span className='tooltip rounded shadow-lg p-1 text-xs bg-gray-100 top-[-10px] right-24' >מחק</span>
+        <div className='absolute top-1 left-0' onClick={() => handleDeleteToList(index)}>
+          <TrashIcon color='#f9b630c5' />
+        </div>
+      </div>
 
           <label className="name-input">{item.name}</label>
           <input

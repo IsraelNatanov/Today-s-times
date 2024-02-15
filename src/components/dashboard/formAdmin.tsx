@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react'
 import Image from "next/image";
-import MyIcon from '@/images/myIcon';
+import MyIcon from '@/images/addItemIcon';
 import { DataInput } from '../type/dateInput';
 import BoxInputs from '../UI/boxInputs';
 import { useSelector, useDispatch } from 'react-redux';
