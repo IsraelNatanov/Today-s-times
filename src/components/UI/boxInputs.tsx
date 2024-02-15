@@ -1,7 +1,5 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import Image from "next/image";
-import MyIcon from "@/images/myIcon";
 import Dialog from "../UI/dialog";
 import { DataInput } from "../type/dateInput";
 import { useSelector, useDispatch } from "react-redux";
@@ -21,6 +19,7 @@ import {
   updateListActivityChildren,
 } from "@/redux/features/listDataInputsSlice";
 import InputTime from "./inputTime";
+import AddItemIcon from "@/images/addItemIcon";
 
 
 interface IProps {
@@ -130,7 +129,7 @@ export default function BoxInputs({
       <div className="row-box">
         <button className="button-add" onClick={openDialog}>
           <span className="font-bold mr-1">הוסף {textButton}</span>
-          <MyIcon color="rgb(255 255 255)" />
+          <AddItemIcon color="rgb(255 255 255)" />
         </button>
         <Dialog
           isOpen={isDialogOpen}
