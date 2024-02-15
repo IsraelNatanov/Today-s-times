@@ -30,7 +30,7 @@ const InputTime = ({  index, handleDeleteToList, handleAddToList, nameInput, tim
   return (
     <div className='flex flex-col items-center justify-center bg-slate-100 min-w-[140px] h-[85px] rounded-lg drop-shadow-md' key={index}>
       <div className='has-tooltip'>
-        <span className='tooltip rounded shadow-lg p-1 text-xs bg-gray-100 top-[-10px] right-24' onClick={() => handleDeleteToList(index)}>מחק</span>
+        <span className='tooltip rounded shadow-lg p-1 text-xs bg-gray-100 top-[-10px] right-24' >מחק</span>
         <div className='absolute top-1 left-0' onClick={() => handleDeleteToList(index)}>
           <TrashIcon color='#f9b630c5' />
         </div>
