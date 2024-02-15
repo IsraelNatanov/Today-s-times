@@ -15,9 +15,9 @@ export interface ListDataInput {
 
 
 export const initialState: ListDataInput = {
-  listShabbatNight: [{ name: "מנחה", time: "" }, { name: "קבלת שבת", time: "" }],
-  listSaturday: [{ name: "שחרית", time: "" }, { name: "מנחה", time: "" }, { name: "ערבית", time: "" }],
-  listClasses: [{ name: "שיחה חסידית", time: "", nameLecture: "" }, { name: "חסידות בוקר", time: "", nameLecture: "" }, { name: "שיעור בהלכה", time: "", nameLecture: "" }],
+  listShabbatNight: [{id:1, name: "מנחה", time: "" }, {id:2, name: "קבלת שבת", time: "" }],
+  listSaturday: [{id:1, name: "שחרית", time: "" }, {id:2, name: "מנחה", time: "" }, {id:3, name: "ערבית", time: "" }],
+  listClasses: [{id:1, name: "שיחה חסידית", time: "", nameLecture: "" }, {id:2, name: "חסידות בוקר", time: "", nameLecture: "" }, {id:3, name: "שיעור בהלכה", time: "", nameLecture: "" }],
   listActivityChildren: []
 
 };
@@ -46,6 +46,18 @@ export const ListDataInputsSlice = createSlice({
       const dataOf: DataInput = action.payload
       const list = updateList(state.listActivityChildren, dataOf.name, dataOf.time)
       state.listActivityChildren = list
+    },
+    updateListShabbatNight(state, action: PayloadAction<DataInput[]>) {
+      state.listShabbatNight = action.payload
+    },
+    updateListSaturday(state, action: PayloadAction<DataInput[]>) {
+      state.listSaturday = action.payload
+    },
+    updateListClasses(state, action: PayloadAction<DataInput[]>) {
+      state.listClasses = action.payload
+    },
+    updateListActivityChildren(state, action: PayloadAction<DataInput[]>) {
+      state.listActivityChildren = action.payload
     },
     deleteItemFromShabbatNight(state, action: PayloadAction<number>){
       const id: number = action.payload
@@ -77,7 +89,7 @@ const updateList = (arr: DataInput[], name: string, value: string) => {
     arr[existingIndex].time = value
   }
   else {
-    arr.push({ name: name, time: value })
+    arr.push({id:arr.length+1, name: name, time: value })
   }
   return arr
 }
@@ -88,6 +100,6 @@ const deleteOneInpute =(arr: DataInput[],id:number)=>{
   
 }
 
-export const { addToListShabbatNight, addToListSaturday, addToListClasses, addToListActivityChildren, deleteItemFromShabbatNight, deleteItemFromListSaturday, deleteItemFromListClasses, deleteItemFromActivityChildren} = ListDataInputsSlice.actions;
+export const { addToListShabbatNight, addToListSaturday, addToListClasses, addToListActivityChildren, updateListShabbatNight, updateListSaturday, updateListClasses, updateListActivityChildren, deleteItemFromShabbatNight, deleteItemFromListSaturday, deleteItemFromListClasses, deleteItemFromActivityChildren} = ListDataInputsSlice.actions;
 
 export default ListDataInputsSlice.reducer;
