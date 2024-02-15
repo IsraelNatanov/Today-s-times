@@ -1,31 +1,28 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import MyIcon from "@/images/myIcon";
+import MyIcon from "@/images/addItemIcon";
 import Dialog from "../UI/dialog";
 import { DataInput } from "../type/dateInput";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
-import { closestCenter, DndContext } from "@dnd-kit/core";
 import {
   addToListShabbatNight,
   addToListSaturday,
   addToListClasses,
   addToListActivityChildren,
+  updateListSaturday,
   deleteItemFromShabbatNight,
   deleteItemFromListSaturday,
   deleteItemFromListClasses,
   deleteItemFromActivityChildren,
+  updateListShabbatNight,
+  updateListClasses,
+  updateListActivityChildren,
 } from "@/redux/features/listDataInputsSlice";
-import { TrashIcon } from "@/images/trashIcon";
 import InputTime from "./inputTime";
-import {
-  arrayMove,
-  SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import AddItemIcon from "@/images/addItemIcon";
+
 
 interface IProps {
   textSubject: string;
@@ -44,7 +41,8 @@ export default function BoxInputs({
 }: IProps) {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isLesson, setIsLesson] = useState<boolean>(false);
-  const [data, setData] = useState<any>(jsonInputs)
+  const [isLength, setIsLength] = useState<boolean>(false);
+  const [data, setData] = useState(jsonInputs);
   const dispatch = useDispatch();
   const listShabbatNight = useSelector(
     (state: RootState) => state.listDataInput.listShabbatNight
@@ -59,6 +57,11 @@ export default function BoxInputs({
     (state: RootState) => state.listDataInput.listActivityChildren
   );
 
+  useEffect(() => {
+    if (jsonInputs!.length > 0) {
+      setIsLength(true);
+    }
+  }, []);
   const handleAddToList = (data: DataInput, nameList = textSubject) => {
     switch (nameList) {
       case "תפילות ליל שבת":
@@ -76,7 +79,22 @@ export default function BoxInputs({
     }
     setIsDialogOpen(false);
   };
-
+  const handleUpdateToList = (list: DataInput[], nameList = textSubject) => {
+    switch (nameList) {
+      case "תפילות ליל שבת":
+        dispatch(updateListShabbatNight(list));
+        break;
+      case "תפילות יום שבת":
+        dispatch(updateListSaturday(list));
+        break;
+      case "שיעורים":
+        dispatch(updateListClasses(list));
+        break;
+      case "פעילות לילדים":
+        dispatch(updateListActivityChildren(list));
+        break;
+    }
+  };
   const handleDeleteToList = (id: number, nameList = textSubject) => {
     switch (nameList) {
       case "תפילות ליל שבת":
@@ -107,42 +125,13 @@ export default function BoxInputs({
     setIsDialogOpen(false);
   };
 
- 
-
-    const {
-      attributes,
-      listeners,
-      setNodeRef,
-      transform,
-      transition,
-    } = useSortable({ id: data.id });
-    const style = {
-      transition,
-      transform: CSS.Transform.toString(transform),
-    };
-  
-
-  
-   
-
-    const onDragEnd = (event:any) => {
-      const { active, over } = event;
-      if (active.id === over.id) {
-        return;
-      }
-      setData((users:any) => {
-        const oldIndex = users.findIndex((user:any) => user.id === active.id);
-        const newIndex = users.findIndex((user:any) => user.id === over.id);
-        return arrayMove(users, oldIndex, newIndex);
-      });
-    };
   return (
-    <div className="box" ref={setNodeRef} style={style}>
+    <div className="box">
       <p className="normal-case text-center"> {textSubject} </p>
-      <div className="row-box" {...attributes} {...listeners}>
+      <div className="row-box">
         <button className="button-add" onClick={openDialog}>
           <span className="font-bold mr-1">הוסף {textButton}</span>
-          <MyIcon color="rgb(255 255 255)" />
+          <AddItemIcon color="rgb(255 255 255)" />
         </button>
         <Dialog
           isOpen={isDialogOpen}
@@ -152,43 +141,12 @@ export default function BoxInputs({
           action={handleAddToList}
         />
 
-          <div className="row-input" >
-          <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-          <SortableContext items={data} strategy={verticalListSortingStrategy}>
-              {jsonInputs?.map((item, index) => (
-                <InputTime
-                  key={index}
-                  index={index}
-                  handleDeleteToList={handleDeleteToList}
-                  handleAddToList={handleAddToList}
-                  nameInput={item.name}
-                  time={item.time}
-                />
-
-              //   <div
-              //   ref={setNodeRef}
-              //   style={style}
-              //   {...attributes}
-              //   {...listeners}
-              //   className="user"
-              // >
-              //   {user.name}
-              // </div>
-                // <div className='flex flex-col items-center justify-center  bg-slate-100 min-w-[140px] h-[85px] rounded-lg drop-shadow-md' key={index}>
-                //   {/* <div className='absolute top-1 left-0' ><TrashIcon color='#f9b630c5' /></div> */}
-                //   <div className='has-tooltip'>
-                //     <span className='tooltip rounded shadow-lg p-1 text-xs bg-gray-100 top-[-10px] right-24' onClick={()=>handleDeleteToList(index)}>מחק</span>
-                //    <div className='absolute top-1 left-0 'onClick={()=>handleDeleteToList(index)} ><TrashIcon color='#f9b630c5' /></div>
-                //   </div>
-
-                //   <label className="name-input"> {item.name} </label>
-                //   <input className='input-time' type="time"  defaultValue={item.time}  onChange={(e) => handleAddToList({ name: item.name, time: e.target.value })} />
-                // </div>
-              ))}
-                </SortableContext>
-        </DndContext>
-          </div>
-
+        <InputTime
+          handleDeleteToList={handleDeleteToList}
+          handleAddToList={handleAddToList}
+          jsonInputs={jsonInputs}
+          handleUpdateToList={handleUpdateToList}
+        />
       </div>
     </div>
   );

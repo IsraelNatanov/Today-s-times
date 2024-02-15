@@ -1,5 +1,5 @@
 export interface DataInput {
-    id?:number;
+    id: number
     name: string;
     time: string;
     nameLecture?: string;
