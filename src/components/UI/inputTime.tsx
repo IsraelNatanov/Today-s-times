@@ -19,21 +19,37 @@ const InputTime = ({
 
   const dragItem = useRef<number>(0);
   const draggedOverItem = useRef<number>(0);
-  const [data, setData] = useState(jsonInputs);
+
   
   function handleSort() {
-
     const idOver = draggedOverItem.current+1;
     let itemeClone = jsonInputs.map(obj => ({ ...obj })); 
+    console.log(draggedOverItem.current);
+    if(draggedOverItem.current > dragItem.current){
+      itemeClone = itemeClone.map(obj => {
+        if (obj.id > (draggedOverItem.current +1) || obj.id+1 <= dragItem.current) {
+          return obj; 
+        } else {
+          return { ...obj, id: obj.id - 1 }; 
+        }
+      });
+  
+    }
+
     
-    itemeClone = itemeClone.map(obj => {
-      if (obj.id > (draggedOverItem.current + 1) && obj.id+1 <= dragItem.current) {
-        return obj; 
-      } else {
-        return { ...obj, id: obj.id - 1 }; 
-      }
-    });
+    else{
+      itemeClone = itemeClone.map(obj => {
+       if (obj.id <= (draggedOverItem.current ) || obj.id > dragItem.current) {
+          return obj; 
+        } else {
+          return { ...obj, id: obj.id + 1 }; 
+        }
+      });
+    }
+  
     itemeClone[dragItem.current].id = idOver;
+    console.log(itemeClone);
+    
     itemeClone.sort((a, b) => a.id - b.id);
     handleUpdateToList(itemeClone);
   }
@@ -42,7 +58,7 @@ const InputTime = ({
     <div className="row-input">
       {jsonInputs.map((item, index) => (
         <div
-          className="flex flex-col items-center justify-center bg-slate-100 min-w-[140px] h-[85px] rounded-lg drop-shadow-md"
+          className="flex flex-col items-center justify-center bg-slate-100 min-w-[140px] min-h-[85px] rounded-lg drop-shadow-md"
           draggable
           onDragStart={() => (dragItem.current = index)}
           onDragEnter={() => (draggedOverItem.current = index)}

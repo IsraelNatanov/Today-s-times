@@ -32,7 +32,7 @@ input[type="text"]:not(:placeholder-shown) ~ .input-text{
   @apply border-solid border-2 border-bg-slate-200 rounded-lg mt-4 py-4 px-3;
 }
 .row-box{
-  @apply flex flex-row justify-center items-center  mt-5 relative
+  @apply flex flex-row justify-center items-center  mt-5 relative max-md:flex-col max-md:gap-[16px]
 }
 
 .button-add{
@@ -40,11 +40,12 @@ input[type="text"]:not(:placeholder-shown) ~ .input-text{
                              text-white shadow-sm hover:bg-[#f9b630c5]
 }
 .row-input{
-  @apply flex flex-row flex-nowrap gap-4 justify-items-center items-center  bg-scroll max-w-[470px] overflow-x-auto m-center p-2
+  @apply flex flex-row flex-nowrap gap-4 justify-items-center items-center  bg-scroll max-w-[470px] overflow-x-auto m-center p-2 max-md:flex-col max-md:bg-scroll max-h-[303px] max-md:overflow-y-auto
 }
 
 ::-webkit-scrollbar {
   height: 7px;
+  width: 5px;
 }
 
 /* Track */
