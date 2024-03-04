@@ -19,7 +19,7 @@ const getApi =async ()=>{
   try{
 
 
-  const url = "http://localhost:3034/api/prayerTimes"
+  const url = "api/prayerTimes"
   const resp =await axios.get(url)
  
  
