@@ -7,11 +7,29 @@ import BoxInputs from '../UI/boxInputs';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/redux/store';
 import {addToListShabbatNight, addToListSaturday, addToListClasses, addToListActivityChildren} from '@/redux/features/listDataInputsSlice'
+import axios from 'axios';
 
 
 export default function FormAdmin() {
 
+useEffect(()=>{
+  getApi() 
+})
+const getApi =async ()=>{
+  try{
 
+
+  const url = "http://localhost:3034/api/prayerTimes"
+  const resp =await axios.get(url)
+ 
+ 
+   console.log(resp);
+  }
+  catch(err){
+    console.log(err);
+    
+  }
+}
     const listShabbatNight = useSelector((state: RootState) => state.listDataInput.listShabbatNight);
     const listSaturday = useSelector((state: RootState) => state.listDataInput.listSaturday);
     const listClasses = useSelector((state: RootState) => state.listDataInput.listClasses);
