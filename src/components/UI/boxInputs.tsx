@@ -42,18 +42,6 @@ export default function BoxInputs({
   const [isLength, setIsLength] = useState<boolean>(false);
   const [data, setData] = useState(jsonInputs);
   const dispatch = useDispatch();
-  const listShabbatNight = useSelector(
-    (state: RootState) => state.listDataInput.listShabbatNight
-  );
-  const listSaturday = useSelector(
-    (state: RootState) => state.listDataInput.listSaturday
-  );
-  const listClasses = useSelector(
-    (state: RootState) => state.listDataInput.listClasses
-  );
-  const listActivityChildren = useSelector(
-    (state: RootState) => state.listDataInput.listActivityChildren
-  );
 
   useEffect(() => {
     if (jsonInputs!.length > 0) {

@@ -1,7 +1,7 @@
 interface PolygonData {
   color: string;
 }
-// MyIcon.js
+
 const AddItemIcon = ({ color }: PolygonData) => {
   return (
     <svg

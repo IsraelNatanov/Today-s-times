@@ -1,15 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "@/redux/store";
-import {
-  addToListShabbatNight,
-  addToListSaturday,
-  addToListClasses,
-  addToListActivityChildren,
-} from "@/redux/features/listDataInputsSlice";
 import { DataInput } from "../type/dateInput";
-import CloseIcon from "@/images/closeIcon";
+
 
 interface DialogProps {
   isOpen: boolean;
@@ -54,9 +46,7 @@ const Dialog: React.FC<DialogProps> = ({
     }));
   };
 
-  // const addDataIntoList()=>{
 
-  // }
   if (!isOpen) return null;
 
   return (
