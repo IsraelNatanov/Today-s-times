@@ -4,37 +4,23 @@ import { RootState } from "../store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 
-// interface ScheduleItem {
-//     id: number;
-//     name: string;
-//     time: string;
-//     nameLecture?: string; 
-// }
-
-
-// interface ScheduleState {
-//     shabbatNight: ScheduleItem[];
-//     saturday: ScheduleItem[];
-//     classes: ScheduleItem[];
-//     activityChildren: ScheduleItem[];
-// }
 
 export const initialState: ScheduleState = {
-    shabbatNight: [
+  'תפילות ליל שבת': [
         { id: 1, name: "מנחה", time: "" },
         { id: 2, name: "קבלת שבת", time: "" }
     ],
-    saturday: [
+    'תפילות יום שבת': [
         { id: 1, name: "שחרית", time: "" },
         { id: 2, name: "מנחה", time: "" },
         { id: 3, name: "ערבית", time: "" }
     ],
-    classes: [
+    'שיעורים': [
         { id: 1, name: "שיחה חסידית", time: "", nameLecture: "" },
         { id: 2, name: "חסידות בוקר", time: "", nameLecture: "" },
         { id: 3, name: "שיעור בהלכה", time: "", nameLecture: "" }
     ],
-    activityChildren: []
+    'פעילות לילדים': []
 };
 
 
@@ -53,6 +39,8 @@ export const ScheduleSlice = createSlice({
     reducers: {
         actionObjSchedule(state, action: PayloadAction<ScheduleActionPayload>) {
             const { keyData, newList, value, id, name, typeAction } = action.payload;
+            console.log('keyData', keyData);
+            
             const updatedList = actionList(state[keyData], newList, value, id, name, typeAction);
             state[keyData] = updatedList;
         },
@@ -61,6 +49,8 @@ export const ScheduleSlice = createSlice({
 
 
 const addItemToList = (list: ScheduleItem[], name: string, value: string): ScheduleItem[] => {
+    console.log('name', name);
+    
     const existingIndex = list.findIndex(item => item.name === name);
     if (existingIndex !== -1) {
         list[existingIndex].time = value;
@@ -72,6 +62,9 @@ const addItemToList = (list: ScheduleItem[], name: string, value: string): Sched
 
 
 const deleteOneInput = (list: ScheduleItem[], id: number): ScheduleItem[] => {
+    console.log('id', id);
+    console.log('list', list);
+    
     const index = list.findIndex(item => item.id === id);
     if (index !== -1) {
         list.splice(index, 1);
@@ -79,7 +72,7 @@ const deleteOneInput = (list: ScheduleItem[], id: number): ScheduleItem[] => {
     return list;
 };
 
-const updateList = (list: ScheduleItem[], newList: ScheduleItem[]): ScheduleItem[] => {
+const updateList = ( newList: ScheduleItem[]): ScheduleItem[] => {
     return newList;
 };
 
@@ -89,7 +82,7 @@ const actionList = (objSchedule: ScheduleItem[], newList: ScheduleItem[], value:
         case "add":
             return addItemToList(objSchedule, name, value);
         case "update":
-            return updateList(objSchedule, newList);
+            return updateList(newList);
         case "delete":
             return deleteOneInput(objSchedule, id);
         default:

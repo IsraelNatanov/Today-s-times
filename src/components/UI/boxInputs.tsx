@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Dialog from "../UI/dialog";
-import { DataInput } from "../type/dateInput";
+import { DataInput, ScheduleItem, ScheduleState } from "../type/dateInput";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
 import {
@@ -18,15 +18,20 @@ import {
   updateListClasses,
   updateListActivityChildren,
 } from "@/redux/features/listDataInputsSlice";
-import InputTime from "./inputTime";
+import {
+actionObjSchedule
+
+} from "@/redux/features/scheduleSlice";
+
 import AddItemIcon from "@/images/addItemIcon";
+import { InputTime } from "./inputTime";
 
 
 interface IProps {
   textSubject: string;
   jsonInputs: DataInput[];
   textButton: string;
-  action: (payload: DataInput) => void;
+  // action: (payload: DataInput) => void;
   idSubject: number;
 }
 
@@ -34,7 +39,7 @@ export default function BoxInputs({
   textSubject,
   jsonInputs,
   textButton,
-  action,
+  // action,
   idSubject,
 }: IProps) {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -97,6 +102,28 @@ export default function BoxInputs({
         break;
     }
   };
+  const handleList = (
+    typeAction: "add" | "update" | "delete",         
+    newList?: ScheduleItem[],               
+    value?: string,                         
+    id?: number,                             
+    name?: string                             
+  ) => {
+    dispatch(
+      actionObjSchedule({
+        keyData:textSubject as keyof ScheduleState,
+        newList: newList || [], 
+        value: value || "",    
+        id: id ?? -1,          
+        name: name || "",       
+        typeAction
+      })
+    );
+    setIsDialogOpen(false);
+  };
+  
+  
+  
   useEffect(() => {
     if (textButton === "שיעור") {
       setIsLesson(true);
@@ -125,13 +152,14 @@ export default function BoxInputs({
           subject={textButton}
           isLesson={isLesson}
           action={handleAddToList}
+          handleList={handleList}
         />
 
         <InputTime
-          handleDeleteToList={handleDeleteToList}
-          handleAddToList={handleAddToList}
+ 
           jsonInputs={jsonInputs}
-          handleUpdateToList={handleUpdateToList}
+          handleList={handleList}
+
         />
       </div>
     </div>

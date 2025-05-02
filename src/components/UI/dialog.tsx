@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { DataInput } from "../type/dateInput";
+import { DataInput, ScheduleItem } from "../type/dateInput";
 
 
 interface DialogProps {
@@ -9,6 +9,12 @@ interface DialogProps {
   subject: string;
   isLesson: boolean;
   action: (payload: DataInput) => void;
+  handleList:(   
+    typeAction: "add" | "update" | "delete",      
+   newList?: ScheduleItem[],               
+   value?: string,                         
+   id?: number,                             
+   name?: string ) => void;
 }
 
 const Dialog: React.FC<DialogProps> = ({
@@ -17,6 +23,7 @@ const Dialog: React.FC<DialogProps> = ({
   subject,
   isLesson,
   action,
+  handleList
 }) => {
   let initialDataInput: DataInput;
   if (subject === "פעילות") {
@@ -33,7 +40,7 @@ const Dialog: React.FC<DialogProps> = ({
       id: 1,
     };
   }
-  const [userData, setUserData] = useState<DataInput>(initialDataInput);
+  const [userData, setUserData] = useState<ScheduleItem>(initialDataInput);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -112,7 +119,9 @@ const Dialog: React.FC<DialogProps> = ({
               className="w-26 rounded-md bg-[#F9B530] px-3.5 py-2.5 text-sm font-semibold flex justify-center items-center m-center my-3  
                              text-white shadow-sm hover:bg-[#f9b630c5]
                              "
-              onClick={() => action(userData)}
+              // onClick={() => action(userData)}
+              onClick={() => handleList(  "add",                         
+                undefined, userData.time,userData.id  ,userData.name   )}
             >
               לחץ להוספה
             </button>
